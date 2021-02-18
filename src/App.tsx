@@ -1,6 +1,7 @@
 import React from 'react';
 import {Button} from "antd";
 import './App.css';
+import store from "./store/store";
 interface IP{
     nAme:String,
     nUm:Number,
@@ -30,8 +31,18 @@ class  App extends React.Component<any, any>{
         this.datas.splice(this.datas.length-1,1)
         this.setState({})
     }
-render() {
+    sele=()=>{
+        store.dispatch({type:"add"})
+        console.log(store.dispatch)
+    }
+    componentDidMount() {
+        store.subscribe(()=>{
+            this.setState({})
+        })
+    }
 
+    render() {
+            const message=store.getState().message;
         return (
             <>
                 <Button type="primary" size="small"  onClick={()=>{this.sel()}}>
@@ -42,6 +53,9 @@ render() {
                         return <li key={index}>{item}</li>
                     })
                 }
+                <Button onClick={()=>{this.sele()}}>
+                    {message}
+                </Button>
             </>
         );
     }
